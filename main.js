@@ -66,7 +66,7 @@ loadPosts(posts);
 
 function loadPosts(arrayPostsData) {
     arrayPostsData.forEach(post => {
-        // GENERATE POSTS USING OBJECTS ARRAY 'posts'
+        // FILL HTML CONTAINER 'posts-list', COLLECTING DATA FROM ARRAY 'posts'
         elePostsContainer.innerHTML += generatePost(
             post.id, post.content, post.media, post.author.name, post.author.image, post.likes, post.created
         );
@@ -75,7 +75,17 @@ function loadPosts(arrayPostsData) {
         btnsLike.forEach(btn => {
             btn.addEventListener("click", function (event) {
                 event.preventDefault();
-                console.log("LIKE CLICKED");
+                const postId = btn.getAttribute("data-postid");
+                const eleLikeCounter = document.getElementById(`like-counter-${postId}`)
+                const btnLike = document.querySelector(".like-button");
+                /* todo set up likes update method
+                //btnLike.classList.toggle("like-button--liked");
+                if (!btn.classList.contains("like-button--liked")) {
+                    eleLikeCounter.innerHTML = updateLikes(`like-counter-${postId}`, true);
+                } else {
+                    eleLikeCounter.innerHTML = updateLikes(`like-counter-${postId}`, true);
+                }
+                */
             });
         });
     });
@@ -90,7 +100,7 @@ function generatePost(numId, content, media, authorName, authorImg, numLikes, da
                         </div>
                         <div class="post-meta__data">
                             <div class="post-meta__author">${authorName}</div>
-                            <div class="post-meta__time">${dateCreated}</div>
+                            <div class="post-meta__time">${getTimePassed(dateCreated)}</div>
                         </div>                    
                     </div>
                 </div>
@@ -107,7 +117,7 @@ function generatePost(numId, content, media, authorName, authorImg, numLikes, da
                             </a>
                         </div>
                         <div class="likes__counter">
-                            Piace a <b id="like-counter-1" class="js-likes-counter">${numLikes}</b> persone
+                            Piace a <b id="like-counter-${numId}" class="js-likes-counter">${numLikes}</b> persone
                         </div>
                     </div> 
                 </div>            
@@ -122,3 +132,18 @@ function authorImgCheck(name, img) {
     const image = `<img class="profile-pic" src="${img}" alt="${name}">`;
     return img === null ? initials : image;
 }
+
+function getTimePassed(postCreated) {
+    const timeDiff = Math.floor((new Date() - new Date(postCreated)) / 1000);
+    if (timeDiff < 60) return `${timeDiff} seconds ago`;
+    if (timeDiff < 3600) return `${Math.floor(timeDiff / 60)} minutes ago`;
+    if (timeDiff < 86400) return `${Math.floor(timeDiff / 3600)} hours ago`;
+    return `${Math.floor(timeDiff / 86400)} days ago`;
+}
+
+// function updateLikes(likesNow, boolIncrease) {
+//     if (boolIncrease) {
+//         return parseInt(likesNow) + 1;
+//     } else {
+//         return parseInt(likesNow) - 1;
+//     }
