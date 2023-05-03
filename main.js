@@ -60,6 +60,9 @@ const elePostsContainer = document.querySelector(".posts-list");
 
 loadPosts(posts);
 
+
+// FUNCTIONS
+
 function loadPosts(arrayPostsData) {
     arrayPostsData.forEach(post => {
         elePostsContainer.innerHTML += generatePost(
@@ -73,7 +76,7 @@ function generatePost(numId, content, media, authorName, authorImg, numLikes, da
                 <div class="post__header">
                     <div class="post-meta">                    
                         <div class="post-meta__icon">
-                            <img class="profile-pic" src="${authorImgCheck(authorName, authorImg)}" alt="${authorName}">                    
+                            ${authorImgCheck(authorName, authorImg)}                    
                         </div>
                         <div class="post-meta__data">
                             <div class="post-meta__author">${authorName}</div>
@@ -101,12 +104,11 @@ function generatePost(numId, content, media, authorName, authorImg, numLikes, da
             </div>`
 }
 
-
-
 function authorImgCheck(name, img) {
-    const initials = name
+    const initials = ` <div class="profile-initials">${name
         .split(' ')
         .map(word => word.charAt(0))
-        .join('');
-    return img === null ? initials : img;
+        .join('')}</div>`;
+    const image = `<img class="profile-pic" src="${img}" alt="${name}">`;
+    return img === null ? initials : image;
 }
