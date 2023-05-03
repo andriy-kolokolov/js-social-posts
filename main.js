@@ -57,6 +57,7 @@ const posts = [
 ];
 
 const elePostsContainer = document.querySelector(".posts-list");
+const btnLike = document.querySelector(".like-button");
 
 loadPosts(posts);
 
@@ -65,9 +66,18 @@ loadPosts(posts);
 
 function loadPosts(arrayPostsData) {
     arrayPostsData.forEach(post => {
+        // GENERATE POSTS USING OBJECTS ARRAY 'posts'
         elePostsContainer.innerHTML += generatePost(
             post.id, post.content, post.media, post.author.name, post.author.image, post.likes, post.created
         );
+        //  ADD EVENT LISTENERS ON LIKE BUTTONS
+        const btnsLike = document.querySelectorAll(".like-button");
+        btnsLike.forEach(btn => {
+            btn.addEventListener("click", function (event) {
+                event.preventDefault();
+                console.log("LIKE CLICKED");
+            });
+        });
     });
 }
 
@@ -105,7 +115,7 @@ function generatePost(numId, content, media, authorName, authorImg, numLikes, da
 }
 
 function authorImgCheck(name, img) {
-    const initials = ` <div class="profile-initials">${name
+    const initials = `<div class="profile-initials">${name
         .split(' ')
         .map(word => word.charAt(0))
         .join('')}</div>`;
