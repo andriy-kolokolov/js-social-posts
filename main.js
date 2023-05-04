@@ -58,15 +58,15 @@ const posts = [
 
 const elePostsContainer = document.querySelector(".posts-list");
 
-loadPosts(posts);
+renderPosts(posts);
 
 
 // FUNCTIONS
 
-function loadPosts(arrayPostsData) {
+function renderPosts(arrayPostsData) {
     arrayPostsData.forEach(post => {
         // FILL HTML CONTAINER 'posts-list', COLLECTING DATA FROM ARRAY 'posts'
-        elePostsContainer.innerHTML += generatePost(
+        elePostsContainer.innerHTML += renderPost(
             post.id, post.content, post.media, post.author.name, post.author.image, post.likes, post.created
         );
         //  ADD EVENT LISTENERS ON LIKE BUTTONS
@@ -81,12 +81,18 @@ function loadPosts(arrayPostsData) {
                 btn.classList.contains("like-button--liked") ?
                     eleLikeCount.innerText = updateLikes(eleLikeCount.innerText, true) :
                     eleLikeCount.innerText = updateLikes(eleLikeCount.innerText, false);
+                // UPDATE OBJECT VALUE 'LIKES'
+                arrayPostsData.forEach(post => {
+                    if (post.id === parseInt(postId)) {
+                        post.likes = parseInt(eleLikeCount.innerText);
+                    }
+                });
             });
         });
     });
 }
 
-function generatePost(numId, content, media, authorName, authorImg, numLikes, dateCreated) {
+function renderPost(numId, content, media, authorName, authorImg, numLikes, dateCreated) {
     return `<div class="post">
                 <div class="post__header">
                     <div class="post-meta">                    
