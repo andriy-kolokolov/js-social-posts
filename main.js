@@ -57,7 +57,6 @@ const posts = [
 ];
 
 const elePostsContainer = document.querySelector(".posts-list");
-const btnLike = document.querySelector(".like-button");
 
 loadPosts(posts);
 
@@ -75,17 +74,13 @@ function loadPosts(arrayPostsData) {
         btnsLike.forEach(btn => {
             btn.addEventListener("click", function (event) {
                 event.preventDefault();
+                btn.classList.toggle("like-button--liked");
                 const postId = btn.getAttribute("data-postid");
-                const eleLikeCounter = document.getElementById(`like-counter-${postId}`)
-                const btnLike = document.querySelector(".like-button");
-                /* todo set up likes update method
-                //btnLike.classList.toggle("like-button--liked");
-                if (!btn.classList.contains("like-button--liked")) {
-                    eleLikeCounter.innerHTML = updateLikes(`like-counter-${postId}`, true);
-                } else {
-                    eleLikeCounter.innerHTML = updateLikes(`like-counter-${postId}`, true);
-                }
-                */
+                const eleLikeCount = document.getElementById(`like-counter-${postId}`);
+                // USE TERNARY OPARATOR TO INCREASE OR DECREASE LIKE COUNT
+                btn.classList.contains("like-button--liked") ?
+                    eleLikeCount.innerText = updateLikes(eleLikeCount.innerText, true) :
+                    eleLikeCount.innerText = updateLikes(eleLikeCount.innerText, false);
             });
         });
     });
@@ -141,9 +136,6 @@ function getTimePassed(postCreated) {
     return `${Math.floor(timeDiff / 86400)} days ago`;
 }
 
-// function updateLikes(likesNow, boolIncrease) {
-//     if (boolIncrease) {
-//         return parseInt(likesNow) + 1;
-//     } else {
-//         return parseInt(likesNow) - 1;
-//     }
+function updateLikes(strLikesNow, boolIncrease) {
+    return boolIncrease ? parseInt(strLikesNow) + 1 : parseInt(strLikesNow) - 1;
+}
